@@ -22,11 +22,17 @@ class CertificateAuthorityController < RestController
   protected
 
   def available_ca_types
-    {
+    @available_ca_types ||= {
       x509: CA::CertificateAuthority.new(
         ::CA::X509::Validator, 
         ::CA::X509::Signatory, 
         ::CA::X509::Renderer
+      ),
+
+      ssh: CA::CertificateAuthority.new(
+        ::CA::SSH::Validator, 
+        ::CA::SSH::Signatory, 
+        ::CA::SSH::Renderer
       )
     }
   end
